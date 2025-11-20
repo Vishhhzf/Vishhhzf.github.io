@@ -1,0 +1,163 @@
+/* --- 1. VARIABLES CSS (TEMA CLARO / OSCURO) --- */
+:root {
+    /* MODO OSCURO (Por defecto) */
+    --bg-color: #030303;
+    --text-primary: #ffffff;
+    --text-secondary: #9ca3af; 
+    --border-color: rgba(255, 255, 255, 0.1);
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --card-bg: rgba(255, 255, 255, 0.02);
+    --gradient-overlay: radial-gradient(circle at center, rgba(109,40,217,0.15) 0%, rgba(0,0,0,0) 70%);
+    --nav-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+}
+
+body.light-mode {
+    /* MODO CLARO (Grafito #C2C1C0) */
+    --bg-color: #C2C1C0; 
+    --text-primary: #111111; /* Texto casi negro para contraste */
+    --text-secondary: #333333; /* Texto secundario gris oscuro */
+    --border-color: rgba(0, 0, 0, 0.2); /* Bordes más visibles */
+    --glass-bg: rgba(255, 255, 255, 0.3); /* Vidrio más lechoso */
+    --card-bg: rgba(255, 255, 255, 0.4);
+    --gradient-overlay: radial-gradient(circle at center, rgba(109,40,217,0.05) 0%, rgba(0,0,0,0) 70%);
+    --nav-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+}
+
+/* RESET & BASICS */
+html {
+    scroll-behavior: smooth;
+    cursor: none; /* Ocultamos cursor por defecto */
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    overflow-x: hidden;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* --- 2. NAVBAR INTELIGENTE (ANIMACIONES) --- */
+nav {
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                background-color 0.4s ease, 
+                backdrop-filter 0.4s ease,
+                padding 0.4s ease,
+                box-shadow 0.4s ease;
+    will-change: transform;
+}
+
+/* Estado: Oculto (Al bajar scroll) */
+.nav-hidden {
+    transform: translateY(-100%);
+}
+
+/* Estado: Scrolled (Fondo vidrio al subir) */
+.nav-scrolled {
+    background-color: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: var(--nav-shadow);
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
+}
+
+/* --- 3. CLASES DE UTILIDAD DINÁMICAS --- */
+.text-primary { color: var(--text-primary); transition: color 0.5s; }
+.text-secondary { color: var(--text-secondary); transition: color 0.5s; }
+.border-border { border-color: var(--border-color); transition: border-color 0.5s; }
+.bg-glass { background-color: var(--glass-bg); transition: background-color 0.5s; }
+.bg-gradient-radial { background-image: var(--gradient-overlay); }
+
+/* Links del Nav (Subrayado animado) */
+.hover-link::after {
+    content: ''; position: absolute; width: 100%; height: 2px;
+    bottom: -2px; left: 0; background-color: #a855f7;
+    transform: scaleX(0); transform-origin: bottom right;
+    transition: transform 0.3s ease-out;
+}
+.hover-link:hover::after { transform: scaleX(1); transform-origin: bottom left; }
+
+/* --- 4. CURSOR PERSONALIZADO --- */
+#cursor-blur {
+    width: 400px; height: 400px;
+    /* Modo Oscuro: Morado suave con 'screen' blend */
+    background: radial-gradient(circle, rgba(120, 50, 255, 0.15), transparent 70%);
+    position: fixed; top: 0; left: 0; transform: translate(-50%, -50%);
+    border-radius: 50%; pointer-events: none; z-index: 9999;
+    filter: blur(20px); transition: width 0.2s, height 0.2s, background 0.5s;
+    mix-blend-mode: screen; 
+}
+
+body.light-mode #cursor-blur {
+    /* Modo Claro: Morado FUERTE sin blend mode para resaltar sobre gris */
+    mix-blend-mode: normal; 
+    background: radial-gradient(circle, rgba(109, 40, 217, 0.4), transparent 70%);
+}
+
+/* --- 5. TARJETAS DE PROYECTOS & STACK --- */
+.project-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    position: relative; overflow: hidden;
+    transition: all 0.3s ease-out;
+}
+
+/* Ajuste hover específico para mantener bordes de colores visibles */
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px -15px rgba(0,0,0,0.5);
+}
+
+.tech-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    padding: 2rem; border-radius: 1rem; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; transition: all 0.3s;
+}
+.tech-card:hover {
+    background: rgba(109, 40, 217, 0.05);
+    border-color: #6d28d9;
+    transform: translateY(-5px);
+}
+
+.tech-pill {
+    padding: 4px 12px; background: rgba(120,120,120, 0.1); border-radius: 20px;
+    font-size: 0.7rem; font-weight: 600; border: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+/* --- 6. FORMULARIO (NUEVO) --- */
+input, textarea {
+    color: var(--text-primary); /* Texto que escribe el usuario */
+}
+input::placeholder, textarea::placeholder {
+    color: var(--text-secondary); /* Color del placeholder */
+    opacity: 0.7;
+}
+/* Autofill fix para que no se ponga fondo blanco en Chrome */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px var(--bg-color) inset !important;
+    -webkit-text-fill-color: var(--text-primary) !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* --- 7. ANIMACIONES --- */
+/* Reveal Text (Efecto Hacker) */
+.reveal-text { opacity: 1; }
+
+/* Fade In Up */
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.animate-fade-in-up { animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+
+/* Floating Icons */
+@keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+.floating-anim { animation: float 4s ease-in-out infinite; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-color); }
+::-webkit-scrollbar-thumb { background: #555; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #777; }
