@@ -77,21 +77,47 @@ nav {
 }
 .hover-link:hover::after { transform: scaleX(1); transform-origin: bottom left; }
 
-/* --- 4. CURSOR PERSONALIZADO --- */
+/* --- 4. CURSOR PERSONALIZADO (TACTICAL GAMING HUD CURSOR) --- */
+#cursor-dot {
+    width: 6px;
+    height: 6px;
+    background-color: #a855f7;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 10000;
+    box-shadow: 0 0 8px #a855f7;
+    transition: transform 0.1s ease-out, background-color 0.3s;
+}
+
 #cursor-blur {
-    width: 400px; height: 400px;
-    /* Modo Oscuro: Morado suave con 'screen' blend */
-    background: radial-gradient(circle, rgba(120, 50, 255, 0.15), transparent 70%);
-    position: fixed; top: 0; left: 0; transform: translate(-50%, -50%);
-    border-radius: 50%; pointer-events: none; z-index: 9999;
-    filter: blur(20px); transition: width 0.2s, height 0.2s, background 0.5s;
-    mix-blend-mode: screen; 
+    width: 32px;
+    height: 32px;
+    border: 1.5px solid #a855f7;
+    background: transparent;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.2);
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.3s, box-shadow 0.3s;
+    will-change: left, top;
+}
+
+body.light-mode #cursor-dot {
+    background-color: #6d28d9;
+    box-shadow: 0 0 8px #6d28d9;
 }
 
 body.light-mode #cursor-blur {
-    /* Modo Claro: Morado FUERTE sin blend mode para resaltar sobre gris */
-    mix-blend-mode: normal; 
-    background: radial-gradient(circle, rgba(109, 40, 217, 0.4), transparent 70%);
+    border-color: #6d28d9;
+    box-shadow: 0 0 15px rgba(109, 40, 217, 0.1);
 }
 
 /* --- 5. TARJETAS DE PROYECTOS & STACK --- */

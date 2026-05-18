@@ -19,38 +19,54 @@ themeToggle?.addEventListener('click', () => {
 });
 
 // --- 2. CURSOR ---
-const cursor = document.getElementById('cursor-blur');
+const cursorDot = document.getElementById('cursor-dot');
+const cursorBlur = document.getElementById('cursor-blur');
 let mouseX = 0, mouseY = 0;
 let cursorX = 0, cursorY = 0;
 
 document.addEventListener('mousemove', (e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
+    
+    // El punto central viaja de manera instantánea
+    if (cursorDot) {
+        cursorDot.style.left = `${mouseX}px`;
+        cursorDot.style.top = `${mouseY}px`;
+    }
 });
 
 function animateCursor() {
-    if (!cursor) return;
+    if (!cursorBlur) return;
+    // La anilla externa sigue al mouse con físicas de resorte suaves
     const distX = mouseX - cursorX;
     const distY = mouseY - cursorY;
-    cursorX += distX * 0.1;
-    cursorY += distY * 0.1;
-    cursor.style.left = `${cursorX}px`;
-    cursor.style.top = `${cursorY}px`;
+    cursorX += distX * 0.15;
+    cursorY += distY * 0.15;
+    cursorBlur.style.left = `${cursorX}px`;
+    cursorBlur.style.top = `${cursorY}px`;
     requestAnimationFrame(animateCursor);
 }
 animateCursor();
 
 // Click Effects
 document.addEventListener('mousedown', () => {
-    if (cursor) {
-        cursor.style.width = '300px'; 
-        cursor.style.height = '300px';
+    if (cursorDot) {
+        cursorDot.style.transform = 'translate(-50%, -50%) scale(0.6)';
+    }
+    if (cursorBlur) {
+        cursorBlur.style.transform = 'translate(-50%, -50%) scale(1.4)';
+        cursorBlur.style.borderColor = '#ec4899'; // Rosa brillante al hacer clic
+        cursorBlur.style.boxShadow = '0 0 20px rgba(236, 72, 153, 0.4)';
     }
 });
 document.addEventListener('mouseup', () => {
-    if (cursor) {
-        cursor.style.width = '400px'; 
-        cursor.style.height = '400px';
+    if (cursorDot) {
+        cursorDot.style.transform = 'translate(-50%, -50%) scale(1)';
+    }
+    if (cursorBlur) {
+        cursorBlur.style.transform = 'translate(-50%, -50%) scale(1)';
+        cursorBlur.style.borderColor = 'var(--accent, #a855f7)';
+        cursorBlur.style.boxShadow = '0 0 15px rgba(168, 85, 247, 0.2)';
     }
 });
 
