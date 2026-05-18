@@ -4,7 +4,7 @@ const iconSun = document.getElementById('icon-sun');
 const iconMoon = document.getElementById('icon-moon');
 const body = document.body;
 
-themeToggle.addEventListener('click', () => {
+themeToggle?.addEventListener('click', () => {
     body.classList.toggle('light-mode');
 
     if (body.classList.contains('light-mode')) {
@@ -29,6 +29,7 @@ document.addEventListener('mousemove', (e) => {
 });
 
 function animateCursor() {
+    if (!cursor) return;
     const distX = mouseX - cursorX;
     const distY = mouseY - cursorY;
     cursorX += distX * 0.1;
@@ -41,10 +42,16 @@ animateCursor();
 
 // Click Effects
 document.addEventListener('mousedown', () => {
-    cursor.style.width = '300px'; cursor.style.height = '300px';
+    if (cursor) {
+        cursor.style.width = '300px'; 
+        cursor.style.height = '300px';
+    }
 });
 document.addEventListener('mouseup', () => {
-    cursor.style.width = '400px'; cursor.style.height = '400px';
+    if (cursor) {
+        cursor.style.width = '400px'; 
+        cursor.style.height = '400px';
+    }
 });
 
 // --- 3. TEXTO HACKER ---
@@ -52,15 +59,16 @@ const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&";
 document.querySelectorAll('.reveal-text').forEach(element => {
     element.addEventListener('mouseover', event => {  
         let iterations = 0;
+        const targetValue = event.target.dataset.value || event.target.innerText;
         const interval = setInterval(() => {
             event.target.innerText = event.target.innerText
                 .split("")
                 .map((letter, index) => {
-                    if(index < iterations) return event.target.dataset.value[index];
+                    if(index < iterations) return targetValue[index];
                     return letters[Math.floor(Math.random() * 26)];
                 })
                 .join("");
-            if(iterations >= event.target.dataset.value.length) clearInterval(interval);
+            if(iterations >= targetValue.length) clearInterval(interval);
             iterations += 1 / 3;
         }, 30);
     });
@@ -102,35 +110,33 @@ magnets.forEach((magnet) => {
         magnet.style.transform = 'translate(0px, 0px)';
     });
 });
+
 // --- 6. NAVBAR INTELIGENTE (SCROLL UP/DOWN) ---
 const nav = document.querySelector('nav');
 let lastScrollY = window.scrollY;
 
 window.addEventListener('scroll', () => {
+    if (!nav) return;
     const currentScrollY = window.scrollY;
 
     // Lógica para Ocultar/Mostrar
     if (currentScrollY > lastScrollY && currentScrollY > 50) {
-        // Si bajas y has pasado 50px del tope -> Ocultar
         nav.classList.add('nav-hidden');
     } else {
-        // Si subes -> Mostrar
         nav.classList.remove('nav-hidden');
     }
 
     // Lógica para el Fondo (Vidrio)
     if (currentScrollY > 20) {
-        // Si no estamos en el tope absoluto -> Poner fondo vidrio
         nav.classList.add('nav-scrolled');
     } else {
-        // Si estamos en el tope (Inicio) -> Transparente total
         nav.classList.remove('nav-scrolled');
     }
 
     lastScrollY = currentScrollY;
-    // ... (Todo el código anterior se mantiene igual) ...
+});
 
-// --- 7. EMAIL OBFSUCATION (SEGURIDAD ANTI-SCRAPING) ---
+// --- 7. EMAIL OBFUSCATION (SEGURIDAD ANTI-SCRAPING) ---
 const secureEmailBtn = document.getElementById('secure-email-btn');
 if(secureEmailBtn) {
     secureEmailBtn.addEventListener('click', (e) => {
@@ -141,5 +147,3 @@ if(secureEmailBtn) {
         window.location.href = `mailto:${user}@${domain}`;
     });
 }
-});
-
